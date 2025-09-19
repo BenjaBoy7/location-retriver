@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Location Logger</title>
+</head>
+<body>
+  <h2>Hello Visitor</h2>
+  <p>We are checking your location for demo purposes.</p>
+
+  <script>
+    function sendData(lat, lon, referrer) {
+      fetch('https://location-api-fqk0.onrender.com/collect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ latitude: lat, longitude: lon, referrer })
+      }).then(() => console.log('Data sent'));
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const referrer = document.referrer || "No referrer";
+        sendData(lat, lon, referrer);
+      }, function(error) {
+        console.log("User denied location access.");
+      });
+    }
+  </script>
+</body>
+</html>
